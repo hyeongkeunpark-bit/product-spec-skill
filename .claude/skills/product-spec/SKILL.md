@@ -1,5 +1,7 @@
 ---
 name: product-spec
+skill-version: "1.0.0"
+skill-repo: hyeongkeunpark-bit/product-spec-skill
 description: Wantedlab Product Spec 양식에 맞춰 프로덕트 스펙(PRD)을 생성/수정/부분 수정한다. 영역(A/B/C) 분기 자동 판별, 페이지 기반 변경 명세, Prototype 단일 HTML 생성까지 자기완결로 처리한다. 사용자가 다음과 같이 말할 때 사용 — "프로덕트 스펙 작성", "PRD 작성", "PRD 만들어줘", "Spec 작성", "Spec 만들어줘", "스펙 작성", "스펙 문서", "스펙 만들어줘", "스펙 수정", "프로젝트 정리", "프로젝트 히스토리 문서", "프로젝트 브리프", "회고 문서", "인수인계 문서", "발표 자료 정리", "협업 문서", "작업 요구사항 정리", "디자이너에게 넘길 문서", "QA 넘기기 전에 정리", "문서로 정리해줘", "문서 정리", "문서 작성", "/product-spec".
 ---
 
@@ -9,6 +11,23 @@ description: Wantedlab Product Spec 양식에 맞춰 프로덕트 스펙(PRD)을
 작성자가 입력한 정보를 기반으로 **이 스킬 본문 하단에 인라인된 Product Spec 템플릿**의 양식에 맞춰 Product Spec을 생성합니다.
 
 이 스킬은 자기완결형입니다. 외부 템플릿 파일이나 Knowledge 첨부에 의존하지 않고, 본문 하단의 「인라인 템플릿」 섹션을 양식의 Single Source of Truth로 사용합니다.
+
+## 버전 자동 체크 (스킬 실행 시 최우선 수행)
+
+이 스킬이 호출되면 **본문 작업을 시작하기 전에** 아래 순서를 실행한다:
+
+1. 이 파일 프론트매터의 `skill-version` 값을 읽는다 (로컬 버전).
+2. GitHub API로 원격 최신 버전을 조회한다:
+   ```bash
+   curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" | head -5 | grep 'skill-version'
+   ```
+3. **로컬 버전 ≠ 원격 버전**이면 사용자에게 아래 안내를 출력하고, 본문 작업은 그대로 이어서 진행한다:
+   ```
+   ⚡ product-spec 스킬 업데이트가 있습니다 (로컬 {로컬버전} → 최신 {원격버전})
+   업데이트: curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" -o .claude/skills/product-spec/SKILL.md
+   ```
+4. **로컬 버전 = 원격 버전**이면 아무것도 출력하지 않는다.
+5. curl 실패(네트워크 오류 등)면 무시하고 본문 작업을 진행한다.
 
 ---
 
