@@ -15,17 +15,11 @@ Claude Code에서 `/product-spec`으로 호출하는 **Product Spec 작성 에�
 
 ## 설치
 
-프로젝트 루트에서 아래 명령어를 실행합니다:
+Claude Code에게 이 레포 URL을 주고 설치를 요청하면 됩니다:
 
-```bash
-mkdir -p .claude/skills/product-spec
-curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" \
-  -o .claude/skills/product-spec/SKILL.md
-```
+> 이 스킬 설치해줘 https://github.com/hyeongkeunpark-bit/product-spec-skill
 
 ## 사용법
-
-Claude Code에서 아래 중 아무 표현으로 호출하면 됩니다:
 
 ```
 /product-spec
@@ -39,29 +33,9 @@ PRD 만들어줘
 문서 정리해줘
 ```
 
-### 신규 생성
-
-`docs/PRODUCT_SPEC.md`가 없으면 자동으로 신규 생성 모드로 진입합니다.
-프로젝트 코드/git/메모를 분석해 초안을 생성하고 `docs/PRODUCT_SPEC.md`에 저장합니다.
-
-### 수정
-
-`docs/PRODUCT_SPEC.md`가 이미 있으면 수정 모드로 자동 분기됩니다.
-변경된 섹션만 업데이트하고 나머지는 그대로 유지합니다.
+- `docs/PRODUCT_SPEC.md`가 없으면 → 신규 생성
+- `docs/PRODUCT_SPEC.md`가 있으면 → 변경 섹션만 수정
 
 ## 업데이트
 
-스킬 실행 시 자동으로 최신 버전을 체크합니다.
-업데이트가 있으면 아래와 같은 안내가 표시됩니다:
-
-```
-⚡ product-spec 스킬 업데이트가 있습니다 (로컬 1.0.0 → 최신 1.1.0)
-업데이트: curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" -o .claude/skills/product-spec/SKILL.md
-```
-
-안내에 나온 `curl` 명령어를 실행하면 최신 버전으로 업데이트됩니다.
-
-## 요구사항
-
-- [Claude Code](https://claude.ai/claude-code) CLI, Desktop, 또는 IDE 확장
-- (선택) Confluence 자동 게시를 사용하려면 Atlassian MCP 연결 필요
+스킬 실행 시 자동으로 최신 버전을 체크합니다. 업데이트가 있으면 안내가 표시됩니다.
