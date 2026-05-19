@@ -320,7 +320,7 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 5. `✅ Confluence 게시: {URL}`
 6. 게시 직후 사용자에게 안내:
    ```
-   📝 현재 '제품 출시 전/미정' 하위에 (작성중) 상태로 생성되었습니다.
+   📝 현재 '제품 출시 미정' 하위에 (작성중) 상태로 생성되었습니다.
    제품 출시가 확정되면 알려주세요 — '제품 출시 확정' 하위로 옮겨드리겠습니다.
    ```
 
@@ -330,7 +330,7 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 1. 사용자에게 확인:
    ```
    📦 Confluence 문서를 '제품 출시 확정' 하위로 옮길까요?
-      - 현재 위치: 제품 출시 전/미정
+      - 현재 위치: 제품 출시 미정
       - 이동 위치: 제품 출시 확정
       • 'yes' → 이동
       • 'cancel' → 현재 위치 유지
