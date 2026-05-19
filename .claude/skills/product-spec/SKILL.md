@@ -1,6 +1,6 @@
 ---
 name: product-spec
-skill-version: "3.0.0"
+skill-version: "3.1.0"
 skill-repo: hyeongkeunpark-bit/product-spec-skill
 description: Wantedlab Product Spec 양식에 맞춰 프로덕트 스펙(PRD)을 생성/수정/부분 수정한다. 영역(A/B/C) 분기 자동 판별, 페이지 기반 변경 명세, Prototype 단일 HTML 생성까지 자기완결로 처리한다. 사용자가 다음과 같이 말할 때 사용 — "프로덕트 스펙 작성", "PRD 작성", "PRD 만들어줘", "Spec 작성", "Spec 만들어줘", "스펙 작성", "스펙 문서", "스펙 만들어줘", "스펙 수정", "프로젝트 정리", "프로젝트 히스토리 문서", "프로젝트 브리프", "회고 문서", "인수인계 문서", "발표 자료 정리", "협업 문서", "작업 요구사항 정리", "디자이너에게 넘길 문서", "QA 넘기기 전에 정리", "문서로 정리해줘", "문서 정리", "문서 작성", "/product-spec".
 ---
