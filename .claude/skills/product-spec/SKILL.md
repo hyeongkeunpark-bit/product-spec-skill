@@ -425,7 +425,7 @@ Confluence 게시 시 사용자 플로우는 아래 3단 구조로 작성합니�
 ```html
 <ul><li><p>해외 기업 체크 → 기업 정보(증빙 포함) → 담당자 정보(인증 없이) → 승인 대기 → 관리자 승인 → 채용 솔루션 사용</p></li></ul>
 <div data-type="panel-info"><p>💡 <strong>Mermaid 도식화 방법:</strong> Confluence 편집 모드 → <code>/mermaid</code> 입력 → Open Editor → Start with your own Diagram → Code 영역에 아래 코드 붙여넣기 → Insert diagram</p></div>
-<details><summary>Mermaid 코드</summary><pre><code class="language-mermaid">flowchart TD
+<details><summary>Mermaid 코드</summary><pre><code>flowchart TD
     A[시작] --> B[끝]</code></pre></details>
 ```
 
