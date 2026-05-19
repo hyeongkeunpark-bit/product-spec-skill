@@ -293,6 +293,7 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 
 **케이스 A — 메타에 `Confluence Page ID` 있음 → 갱신 모드:**
 
+0. **소요 시간 안내:** `⏳ Confluence 페이지를 갱신합니다. API 특성상 1~2분 정도 걸릴 수 있습니다.`
 1. `getConfluencePage(pageId)` → `version.by.accountId`, `version.by.displayName`, `version.when` 추출
 2. `atlassianUserInfo` → 본인 accountId
 3. **충돌 검사:**
@@ -308,6 +309,7 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 
 **케이스 B — 메타에 `Confluence Page ID` 없음 → 첫 게시:**
 
+0. **소요 시간 안내:** `⏳ Confluence에 새 페이지를 생성합니다. API 특성상 1~2분 정도 걸릴 수 있습니다.`
 1. **부모 페이지 고정:** `https://wantedlab.atlassian.net/wiki/spaces/WAN/pages/4808376595` (작성중 문서 보관 페이지)
    - spaceKey: `WAN`, parentId: `4808376595`
    - 부모 페이지를 사용자에게 묻지 않는다
@@ -324,6 +326,7 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 
 **케이스 C — 제품 출시 확정 (사용자가 "작성 완료했어", "제품 출시 확정 됐어", "출시 확정", "완료했어" 등):**
 
+0. **소요 시간 안내 (사용자 확인 후):** `⏳ Confluence 페이지를 이동합니다. 전체 본문을 다시 저장해야 해서 1~2분 정도 걸릴 수 있습니다.`
 1. 사용자에게 확인:
    ```
    📦 Confluence 문서를 '제품 출시 확정' 하위로 옮길까요?
@@ -763,7 +766,7 @@ Spec 출력 직전에 내부 점검합니다:
 
 기존 Confluence 페이지를 업데이트(`updateConfluencePage`)할 때는 반드시 다음 순서를 지킵니다.
 
-1. **시작 안내 (1줄)** — "지금부터 작업, 페이지 본문 수정 자제 부탁"
+1. **시작 안내 (1줄)** — "⏳ Confluence 페이지 업데이트 중입니다 (1~2분 소요). 페이지 본문 수정 자제 부탁드립니다."
 2. **매 update 직전 재-read 필수** — `getConfluencePage` 다시 호출. 이전 read 결과 재사용 금지.
    - `version.number = N` 기록
    - `contentFormat` 기록
