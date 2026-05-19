@@ -208,7 +208,7 @@ Phase 0에서 수집한 정보를 종합해 곧바로:
 - **기존 유지 항목 생략.** 변경/추가분만 기재.
 - **변경 명세는 추가/변경분만.** 기존 기능/필드 재나열 금지. 입력 필드 스펙(타입, 필수, 에러)은 설명 컬럼에 인라인 기재.
 - 미지원 플랫폼도 "미지원"으로 명시 (행 삭제 금지).
-- 사용자 플로우는 반드시 Mermaid `flowchart TD` (top-down 방향 고정)로 작성 (텍스트 트리 금지, LR 사용 금지). Confluence 게시 시 SVG로 자동 변환(「Mermaid → SVG 자동 변환」 참조). 아래에 1줄 텍스트 요약 병기.
+- 사용자 플로우는 아래 3단 구조로 작성: (1) 불릿 포인트 텍스트로 플로우 요약, (2) 파란 안내 박스에 Mermaid 도식화 방법 설명, (3) Mermaid 코드를 접힘 상태로 포함.
 - 배포 차단 조건, 조건부 배포 판단 섹션은 반드시 포함.
 - 정보가 정말 0에 가까우면, 가상의 예시 초안을 1차 출력하고 확인 요청 — **빈 응답 금지**.
 
@@ -342,30 +342,21 @@ Spec과 같은 응답에 포함하지 않음. 별도 요청 시 생성.
 
 ---
 
-## Mermaid → SVG 자동 변환
+## 사용자 플로우 Confluence 작성 규칙
 
-Confluence의 Mermaid 확장은 불안정하므로, 사용자 플로우 다이어그램은 **SVG 이미지로 변환**하여 삽입합니다.
+Confluence 게시 시 사용자 플로우는 아래 3단 구조로 작성합니다:
 
-**변환 절차:**
+1. **텍스트 플로우** — 불릿 포인트(`<ul>`)로 플로우 요약
+2. **도식화 안내** — `panel-info` 박스에 Mermaid 도식화 방법 설명
+3. **Mermaid 코드** — `<details>` 접힘 상태로 코드블록 포함
 
-1. Mermaid 코드를 `/tmp/{name}.mmd` 파일로 저장 (반드시 `flowchart TD`로 시작)
-2. `npx -y @mermaid-js/mermaid-cli -i /tmp/{name}.mmd -o /tmp/{name}.svg -b transparent` 실행 (자동 설치됨)
-3. `npx -y svgo /tmp/{name}.svg -o /tmp/{name}-opt.svg` 로 최적화
-4. **SVG 후처리 (필수):**
-   - SVG의 `width` 속성을 `width="400"` 으로 고정 (viewBox는 그대로 유지). `width="100%"` 금지 — Confluence data URI에서 크기 0으로 렌더링됨
-   - 배경색 추가: style 속성에 `background-color:#fff` 포함 확인
-   - CSS class 속성(`.node`, `.label` 등) 보존 확인 — SVGO가 제거하면 `--config '{"plugins":[{"name":"preset-default","params":{"overrides":{"cleanupIDs":false,"removeUnknownsAndDefaults":false}}}]}'` 옵션 사용
-5. SVG → base64 변환: `base64 -i /tmp/{name}-opt.svg -o /tmp/{name}-b64.txt`
-6. Confluence 본문에 `<img src="data:image/svg+xml;base64,{BASE64}" alt="사용자 플로우">` 로 삽입
-
-**Confluence `<img>` 제약:**
-- `<img>` 태그에 `style` 속성 사용 불가 (Confluence가 거부). 크기는 SVG 내부 `width` 속성으로 제어
-- Confluence가 `<img>`를 `<figure data-type="media-single" data-layout="center">` 로 자동 래핑함 — 별도 래핑 불필요
-
-**주의:**
-- `npx -y @mermaid-js/mermaid-cli` 명령에 `mmdc`를 인수로 넣지 않는다 (패키지 자체가 CLI 진입점)
-- `-b transparent` 옵션 사용하되, SVG 후처리에서 `background-color:#fff` 로 흰 배경 보장
-- 로컬 `docs/PRODUCT_SPEC.md`에는 Mermaid 코드 블록(` ```mermaid `)을 그대로 유지 — SVG 변환은 Confluence 게시 시에만
+**Confluence HTML 예시:**
+```html
+<ul><li><p>해외 기업 체크 → 기업 정보(증빙 포함) → 담당자 정보(인증 없이) → 승인 대기 → 관리자 승인 → 채용 솔루션 사용</p></li></ul>
+<div data-type="panel-info"><p>💡 <strong>Mermaid 도식화 방법:</strong> Confluence 편집 모드 → <code>/mermaid</code> 입력 → Open Editor → Start with your own Diagram → Code 영역에 아래 코드 붙여넣기 → Insert diagram</p></div>
+<details><summary>Mermaid 코드</summary><pre><code class="language-mermaid">flowchart TD
+    A[시작] --> B[끝]</code></pre></details>
+```
 
 ---
 
@@ -388,7 +379,7 @@ Spec 출력 직전에 내부 점검합니다:
 - [ ] 변경 명세에 기존 기능/필드가 재나열되어 있지 않은가?
 - [ ] 설명 내 **맥락:** 이 "코드를 이렇게 짜라"가 아니라 비즈니스 로직/제약을 전달하는가?
 - [ ] 설명 내 줄바꿈(`<br>`)으로 에러/맥락/문구가 분리되어 있는가?
-- [ ] Mermaid flowchart + 텍스트 1줄 요약이 있는가? (Confluence 게시 시 SVG로 변환했는가?)
+- [ ] 사용자 플로우가 3단 구조(텍스트 불릿 + 도식화 안내 박스 + Mermaid 코드 접힘)로 작성되었는가?
 - [ ] 시나리오에 오류 등급이 있는가?
 - [ ] 배포 차단 조건 + 조건부 배포 판단이 있는가?
 - [ ] 추측 금지 항목을 채운 곳은 없는가?
@@ -407,7 +398,7 @@ Spec 출력 직전에 내부 점검합니다:
 - **호출 즉시 초안 출력. 사전 질문 게이트 금지.**
 - **단일 파일만 읽고 Spec을 쓰지 않음.** Phase 0 수행 필수.
 - **`##` 헤딩 바깥에 Spec 본문을 출력하지 않음.**
-- Mermaid 대신 텍스트 트리를 출력하지 않음.
+- 사용자 플로우를 텍스트 트리로만 출력하지 않음. 반드시 3단 구조(텍스트 불릿 + 도식화 안내 + Mermaid 코드 접힘).
 - **기존 유지 항목을 나열하지 않음.** 변경/추가분만 기재.
 - **변경 명세에 기존 기능/필드를 재나열하지 않음.**
 - **맥락에 코드 구조/함수명을 지시하지 않음.** 비즈니스 로직과 제약만 전달.
@@ -525,11 +516,18 @@ Spec 출력 직전에 내부 점검합니다:
 
 **사용자 플로우:**
 
+- (불릿 포인트로 사용자 플로우를 텍스트로 설명. 예: 해외 기업 체크 → 기업 정보(증빙 포함) → 담당자 정보(인증 없이) → 승인 대기 → 관리자 승인 → 채용 솔루션 사용)
+
+> 💡 **Mermaid 도식화 방법:** Confluence 편집 모드 → `/mermaid` 입력 → Open Editor → Start with your own Diagram → Code 영역에 아래 코드 붙여넣기 → Insert diagram
+
+<details>
+<summary>Mermaid 코드</summary>
+
 ```mermaid
-(Mermaid flowchart — 변경 흐름 중심으로 간략하게)
+(Mermaid flowchart TD — 변경 흐름 중심으로 간략하게)
 ```
 
-> 텍스트 요약: (1줄)
+</details>
 
 **Out of Scope:**
 -
@@ -656,7 +654,7 @@ Spec 출력 직전에 내부 점검합니다:
 
 ## 미팅록
 
-> 이 Spec과 관련된 주요 미팅/리뷰 기록. Confluence에서는 **펼치기(expand) 매크로**로 감싸서 기본 접힘 상태로 표시합니다.
+> 이 Spec과 관련된 주요 미팅/리뷰 기록.
 
 | 일자 | 참석자 | 내용 |
 |---|---|---|
@@ -695,11 +693,11 @@ Spec 출력 직전에 내부 점검합니다:
 
 **구조:**
 - 모든 섹션을 접지 않고 펼쳐진 상태로 유지합니다. 📘 마커 3개(프로젝트 배경 / 구현 범위 요약 / 구현 범위 상세)가 문서 구간을 구분합니다.
-- **미팅록**, **업데이트 로그**는 문서 하단에 각각 Confluence 펼치기(expand) 매크로로 감싸서 기본 접힘 상태로 표시합니다.
+- **업데이트 로그**는 문서 하단에 Confluence 펼치기(expand) 매크로로 감싸서 기본 접힘 상태로 표시합니다.
+- **미팅록**은 접지 않고 펼쳐진 상태로 표시합니다.
 
-**사용자 플로우 (SVG):**
-- Mermaid 코드 → SVG 자동 변환 후 data URI `<img>` 태그로 삽입 (「Mermaid → SVG 자동 변환」 참조)
-- Confluence의 Mermaid 매크로는 사용하지 않음 (확장 로드 오류 빈번)
+**사용자 플로우:**
+- 텍스트 불릿 → panel-info 도식화 안내 → Mermaid 코드 접힘 (「사용자 플로우 Confluence 작성 규칙」 참조)
 
 **Prototype:**
 - HTML 파일을 Confluence 페이지에 첨부 파일로 업로드
