@@ -318,17 +318,24 @@ Atlassian MCP 도구(`createConfluencePage`, `updateConfluencePage`, `getConflue
 5. `✅ Confluence 게시: {URL}`
 6. 게시 직후 사용자에게 안내:
    ```
-   📝 현재 '작성중' 상태로 Confluence에 생성되었습니다.
-   문서 작성이 완료되면 '작성 완료'라고 알려주세요
-   — 제목에서 (작성중)을 제거하고 PRD 페이지 하위로 이동해 드리겠습니다.
+   📝 현재 '제품 출시 전/미정' 하위에 (작성중) 상태로 생성되었습니다.
+   제품 출시가 확정되면 알려주세요 — '제품 출시 확정' 하위로 옮겨드리겠습니다.
    ```
 
-**케이스 C — 작성 완료 선언 (사용자가 "작성 완료", "완료했어" 등):**
+**케이스 C — 제품 출시 확정 (사용자가 "작성 완료했어", "제품 출시 확정 됐어", "출시 확정", "완료했어" 등):**
 
-1. 제목에서 `(작성중) ` 접두사 제거 → `[20xx] Product Spec: [제목]`
-2. 저장 위치를 `https://wantedlab.atlassian.net/wiki/spaces/WAN/pages/4808212726` 하위로 이동
+1. 사용자에게 확인:
+   ```
+   📦 Confluence 문서를 '제품 출시 확정' 하위로 옮길까요?
+      - 현재 위치: 제품 출시 전/미정
+      - 이동 위치: 제품 출시 확정
+      • 'yes' → 이동
+      • 'cancel' → 현재 위치 유지
+   ```
+2. 사용자가 'yes' → 제목에서 `(작성중) ` 접두사 제거 → `[20xx] Product Spec: [제목]`
+3. 저장 위치를 `https://wantedlab.atlassian.net/wiki/spaces/WAN/pages/4808212726` 하위로 이동
    - `updateConfluencePage`의 `parentId`를 `4808212726`로 변경
-3. `✅ 작성 완료: 제목 갱신 + PRD 페이지로 이동 완료`
+4. `✅ 제품 출시 확정: 제목 갱신 + '제품 출시 확정' 페이지로 이동 완료`
 
 **MCP 미가용 (Atlassian MCP 미연결):**
 
