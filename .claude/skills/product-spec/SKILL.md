@@ -1,6 +1,6 @@
 ---
 name: product-spec
-skill-version: "3.1.0"
+skill-version: "3.2.0"
 skill-repo: hyeongkeunpark-bit/product-spec-skill
 description: Wantedlab Product Spec 양식에 맞춰 프로덕트 스펙(PRD)을 생성/수정/부분 수정한다. 영역(A/B/C) 분기 자동 판별, 페이지 기반 변경 명세, Prototype 단일 HTML 생성까지 자기완결로 처리한다. 사용자가 다음과 같이 말할 때 사용 — "프로덕트 스펙 작성", "PRD 작성", "PRD 만들어줘", "Spec 작성", "Spec 만들어줘", "스펙 작성", "스펙 문서", "스펙 만들어줘", "스펙 수정", "프로젝트 정리", "프로젝트 히스토리 문서", "프로젝트 브리프", "회고 문서", "인수인계 문서", "발표 자료 정리", "협업 문서", "작업 요구사항 정리", "디자이너에게 넘길 문서", "QA 넘기기 전에 정리", "문서로 정리해줘", "문서 정리", "문서 작성", "/product-spec".
 ---
@@ -24,10 +24,23 @@ description: Wantedlab Product Spec 양식에 맞춰 프로덕트 스펙(PRD)을
 3. **로컬 버전 ≠ 원격 버전**이면 사용자에게 아래 안내를 출력하고, 본문 작업은 그대로 이어서 진행한다:
    ```
    ⚡ product-spec 스킬 업데이트가 있습니다 (로컬 {로컬버전} → 최신 {원격버전})
-   업데이트: curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" -o .claude/skills/product-spec/SKILL.md
+   - Claude Code에 파일로 설치해 사용 중이라면: "스킬 업데이트해줘"라고 요청하시면 최신본으로 갱신해 드립니다.
+   - 조직에 중앙 등록된 스킬로 사용 중이라면: 스킬 관리 담당자에게 갱신을 요청해 주세요.
    ```
 4. **로컬 버전 = 원격 버전**이면 아무것도 출력하지 않는다.
 5. curl 실패(네트워크 오류 등)면 무시하고 본문 작업을 진행한다.
+
+### 사용자가 갱신을 요청한 경우
+
+사용자가 "스킬 업데이트해줘"(또는 같은 취지의 요청)라고 하면 아래 순서로 처리한다:
+
+1. **현재 로드된 이 SKILL.md 파일의 실제 경로를 확인한다.** 경로를 하드코딩하지 않는다 — 실행 환경마다 설치 위치가 다르므로, 지금 로드되어 있는 이 파일의 실제 경로를 확인해서 사용한다.
+2. 그 경로에 원격 최신본을 덮어쓴다:
+   ```bash
+   curl -sf "https://raw.githubusercontent.com/hyeongkeunpark-bit/product-spec-skill/main/.claude/skills/product-spec/SKILL.md" -o {실제 파일 경로}
+   ```
+3. 파일 쓰기가 불가능한 환경(중앙 등록 스킬 등 경로에 쓸 수 없는 경우)이면 덮어쓰기를 시도하지 말고, **스킬 관리 담당자에게 갱신을 요청하라는 안내만** 한다.
+4. 덮어쓰기에 성공하면 갱신 사실을 한 줄로 알리고, **새 지침은 다음 실행부터 적용됨**을 안내한다. (예: `✅ product-spec 스킬을 {원격버전}으로 갱신했습니다. 새 지침은 다음 실행부터 적용됩니다.`)
 
 ---
 
